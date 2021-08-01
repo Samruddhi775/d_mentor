@@ -13,7 +13,7 @@ class _DeleteNotesState extends State<DeleteNotes> {
   var message;
   bool isLoaded = false;
   getList() async{
-    var url = 'https://codembs.com/dmentor/subject.php';
+    var url = 'https://codembs.com/dmentor/notes.php';
     var res = await http.get(Uri.parse(url));
     message = jsonDecode(res.body);
     print(res.body);
@@ -22,7 +22,7 @@ class _DeleteNotesState extends State<DeleteNotes> {
     });
   }
   remove(var id)async{
-    var url = 'https://codembs.com/dmentor/deletesubject.php';
+    var url = 'https://codembs.com/dmentor/deletenotes.php';
     var res = await http.post(Uri.parse(url),body: {
       "id": id
     });
