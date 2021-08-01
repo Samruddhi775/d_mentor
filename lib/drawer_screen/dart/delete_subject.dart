@@ -30,7 +30,6 @@ class _DeleteSubjectState extends State<DeleteSubject> {
       isLoaded= false;
       getList();
     });
-    
   }
 
   @override

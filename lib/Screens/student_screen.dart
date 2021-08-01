@@ -1,6 +1,10 @@
+import 'dart:convert';
+
+import 'package:d_mentor/Screens/notesScreen.dart';
 import 'package:d_mentor/maths/maths_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 
 class StudentScreen extends StatefulWidget {
   @override
@@ -8,6 +12,23 @@ class StudentScreen extends StatefulWidget {
 }
 
 class _StudentScreenState extends State<StudentScreen> {
+    var message;
+  bool isLoaded = false;
+
+  getList() async{
+    var url = 'https://codembs.com/dmentor/notes.php';
+    var res = await http.get(Uri.parse(url));
+    message = jsonDecode(res.body);
+    print(res.body);
+    setState(() {
+      isLoaded = true;
+    });
+  }
+  @override
+  void initState() { 
+    super.initState();
+    getList();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,128 +38,55 @@ class _StudentScreenState extends State<StudentScreen> {
             "D-Mentor"
         ),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 25,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  height: 120,
-                  width: 180,
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(15),
-                        bottomLeft: Radius.circular(15),
-                      )
-                  ),
-                  child: TextButton.icon(
-                    label: Text(
-                      "Maths",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
+      body: isLoaded?
+      GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+        ),
+        itemCount: message.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>NotesScreen(message[index]["id"])));
+              },
+              child: Container(
+                      height: 120,
+                      width: 180,
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(15),
+                            bottomLeft: Radius.circular(15),
+                          )
                       ),
+                      child: Center(child: Text(message[index]["name"],style: TextStyle(fontSize: 25),)),
                     ),
-                    icon: Icon(
-                      Icons.all_inclusive,
-                      color: Colors.black,
-                    ),
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MathsScreen()));
-                    },
-                  ),
-                ),
-                Container(
-                  height: 120,
-                  width: 180,
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(15),
-                        bottomLeft: Radius.circular(15),
-                      )
-                  ),
-                )
-              ],
             ),
-          ),
-          SizedBox(
-            height: 25,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                height: 120,
-                width: 180,
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(15),
-                      bottomLeft: Radius.circular(15),
-                    )
-                ),
-              ),
-              Container(
-                height: 120,
-                width: 180,
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(15),
-                      bottomLeft: Radius.circular(15),
-                    )
-                ),
-              )
-            ],
-          )
-        ],
-      ),
-      drawer: Drawer(
+          );
+        },
+      ): Center(child: CircularProgressIndicator(),),
+       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text(
-                " Samruddhi Zombade",
-                style: GoogleFonts.tangerine(
-                  textStyle: Theme.of(context).textTheme.headline4,
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+            ListTile(
+              leading: Icon(Icons.dashboard_sharp),
+              title: Text(
+                "Maths",
+                style: TextStyle(
+                    fontSize: 16
                 ),
               ),
-              accountEmail: Text(
-                " zombadesamruddhi@gmail.com",
-                style: GoogleFonts.tangerine(
-                  textStyle: Theme.of(context).textTheme.headline4,
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> MathsScreen()));
+              },
             ),
             ListTile(
               leading: Icon(Icons.dashboard_sharp),
               title: Text(
                 "Dashboard",
-                style: TextStyle(
-                    fontSize: 16
-                ),
-              ),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.feedback_outlined),
-              title: Text(
-                "Feedback",
                 style: TextStyle(
                     fontSize: 16
                 ),

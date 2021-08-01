@@ -255,7 +255,14 @@ class _NextState extends State<Next> {
                         color: Colors.black,
                       ),
                       onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Contact()));
+                       showDialog(context: context, builder: (context){
+                return Dialog(
+                  child: Column(children: [
+                    Text("Number : 7218015817"),
+                    Text("Mail : durveshmd17dd@gmail.com")
+                  ],),
+                );
+              });
                       },
                     ),
                   ),
@@ -269,26 +276,7 @@ class _NextState extends State<Next> {
         child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          UserAccountsDrawerHeader(
-            accountName: Text(
-              " Samruddhi Zombade",
-              style: GoogleFonts.tangerine(
-                textStyle: Theme.of(context).textTheme.headline4,
-                fontSize: 35,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            accountEmail: Text(
-              " zombadesamruddhi@gmail.com",
-              style: GoogleFonts.tangerine(
-                textStyle: Theme.of(context).textTheme.headline4,
-                fontSize: 35,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
+          
           ListTile(
             leading: Icon(Icons.account_circle_rounded),
             title: Text(
@@ -369,7 +357,14 @@ class _NextState extends State<Next> {
               ),
             ),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Contact()));
+              showDialog(context: context, builder: (context){
+                return Dialog(
+                  child: Column(children: [
+                    Text("Number : 7218015817"),
+                    Text("Mail : durveshmd17dd@gmail.com")
+                  ],),
+                );
+              });
             },
           ),
         ],
